@@ -1,6 +1,6 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-module.exports = require("./lib/randomstring");
-},{"./lib/randomstring":2}],2:[function(require,module,exports){
+!function(e){if("object"==typeof exports)module.exports=e();else if("function"==typeof define&&define.amd)define(e);else{var f;"undefined"!=typeof window?f=window:"undefined"!=typeof global?f=global:"undefined"!=typeof self&&(f=self),f.Signupsio=e()}}(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
+module.exports = _dereq_("./lib/randomstring");
+},{"./lib/randomstring":2}],2:[function(_dereq_,module,exports){
 var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghiklmnopqrstuvwxyz';
 
 exports.generate = function(length) {
@@ -15,10 +15,10 @@ exports.generate = function(length) {
   
   return string;
 }
-},{}],3:[function(require,module,exports){
-var cookies = require('./cookies');
-var randomstring = require('randomstring');
-var Keen = require('./lib/keen_track');
+},{}],3:[function(_dereq_,module,exports){
+var cookies = _dereq_('./cookies');
+var randomstring = _dereq_('randomstring');
+var Keen = _dereq_('./lib/keen_track');
 
 module.exports = Api;
 
@@ -88,7 +88,7 @@ Api.prototype.sendEvent = function (name, data, callback) {
   });
 };
 
-},{"./cookies":4,"./lib/keen_track":6,"randomstring":1}],4:[function(require,module,exports){
+},{"./cookies":4,"./lib/keen_track":6,"randomstring":1}],4:[function(_dereq_,module,exports){
 /*\
 |*|
 |*|  :: cookies.js ::
@@ -148,7 +148,7 @@ module.exports = {
   }
 };
 
-},{}],5:[function(require,module,exports){
+},{}],5:[function(_dereq_,module,exports){
 exports.each = each;
 exports.addClass = addClass;
 exports.ready = ready;
@@ -208,7 +208,7 @@ function trigger(el, evt, data) {
   el.dispatchEvent(event);
 }
 
-},{}],6:[function(require,module,exports){
+},{}],6:[function(_dereq_,module,exports){
 var Keen = exports;
 
 // deal with some browsers not supporting console.log
@@ -860,9 +860,9 @@ if (Keen._ocrq && Keen._ocrq.length > 0) {
     Keen._ocrq = null;
 }
 
-},{}],7:[function(require,module,exports){
-var Api = require('./api'),
-  dom = require('./dom');
+},{}],7:[function(_dereq_,module,exports){
+var Api = _dereq_('./api'),
+  dom = _dereq_('./dom');
 
 module.exports = Signupsio;
 
@@ -933,3 +933,5 @@ Signupsio.prototype._onSubmit = function (form) {
 
 
 },{"./api":3,"./dom":5}]},{},[7])
+(7)
+});

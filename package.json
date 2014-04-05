@@ -5,10 +5,10 @@
   "main": "./signupsio.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build-dev": "browserify src/signupsio.js > signupsio.js",
-    "build-prod": "browserify src/signupsio.js | uglifyjs > signupsio.min.js",
+    "build-dev": "browserify src/signupsio.js -s Signupsio > signupsio.js",
+    "build-prod": "browserify src/signupsio.js -s Signupsio | uglifyjs > signupsio.min.js",
     "build": "npm run build-dev & npm run build-prod",
-    "watch": "watchify src/signupsio.js -o signupsio.js"
+    "watch": "watchify src/signupsio.js -o signupsio.js -s Signupsio"
   },
   "author": "trey.griffith@gmail.com",
   "license": "MIT",
