@@ -882,7 +882,7 @@ Signupsio.prototype.trackForm = function(form) {
 };
 
 Signupsio.prototype.visit = function (page) {
-  api.sendEvent('visit', {
+  this.api.sendEvent('visit', {
     page_name: page
   });
 };
