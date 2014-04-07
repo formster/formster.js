@@ -1,8 +1,8 @@
 {
   "name": "signupsio-js",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Client-side Form Tracking for Signups.io",
-  "main": "./signupsio.js",
+  "main": "./src/signupsio.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build-dev": "browserify src/signupsio.js -s Signupsio > signupsio.js",
