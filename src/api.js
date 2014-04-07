@@ -21,6 +21,7 @@ Api.prototype._setKeys = function (key) {
   this._writeKey = parts[1];
   this._userId = parts[2];
   this._siteId = parts[3];
+  this._public = !!parts[4];
 };
 
 Api.prototype.register = function (key) {
@@ -41,6 +42,7 @@ Api.prototype.sendEvent = function (name, data, callback) {
   if(data.meta) throw new Error("Meta data is reserved for Signups.io");
 
   data.meta = {
+    public: !!this._public,
     user: this._userId,
     site: this._siteId,
     ip_address: '${keen.ip}',

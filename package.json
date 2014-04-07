@@ -1,6 +1,6 @@
 {
   "name": "signupsio-js",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Client-side Form Tracking for Signups.io",
   "main": "./signupsio.js",
   "scripts": {
