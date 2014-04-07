@@ -15,6 +15,8 @@ function Api(key) {
   }
 }
 
+Api.Keen = Keen;
+
 Api.prototype._setKeys = function (key) {
   var parts = key.split(':');
   this._projectId = parts[0];
@@ -60,12 +62,12 @@ Api.prototype.sendEvent = function (name, data, callback) {
     name = name.slice(0, 256);
   }
 
-  Keen.configure({
+  Api.Keen.configure({
     projectId: this._projectId,
     writeKey: this._writeKey
   });
 
-  Keen.addEvent(name, data, function (success) {
+  Api.Keen.addEvent(name, data, function (success) {
     callback(null, success);
   }, function (err) {
     callback(err);
