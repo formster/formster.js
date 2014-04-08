@@ -1128,7 +1128,7 @@ function eventName(name) {
   }
 
   // replace non-ASCII characters
-  name = name.replace(/[\x00-\x7F]/g, '_');
+  name = name.replace(/[^\x00-\x7F]/g, '_');
 
   // replace `$`
   name = name.replace(/\$/gi, '_');
