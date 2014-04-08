@@ -1254,8 +1254,8 @@ Signupsio.Api = Api;
 Signupsio.auto = function () {
   dom.ready(function () {
     dom.each("form.signupsio", function (form) {
-      var href = form.getAttribute('href');
-      if(~href.indexOf('?')) {
+      var href = form.getAttribute('action');
+      if(href && ~href.indexOf('?')) {
         var key = qs.parse(href.slice(href.indexOf('?') + 1)).key;
         var signupsio = new Signupsio(key);
         signupsio.visit(document.title);
