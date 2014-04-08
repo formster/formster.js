@@ -14,11 +14,21 @@ Signupsio.Api = Api;
 Signupsio.auto = function () {
   dom.ready(function () {
     dom.each("form.signupsio", function (form) {
+
+      // pull the url from the form
       var href = form.getAttribute('action');
       if(href && ~href.indexOf('?')) {
+
+        // get the key from the query string
         var key = qs.parse(href.slice(href.indexOf('?') + 1)).key;
+
+        // create a new instance for this form
         var signupsio = new Signupsio(key);
+
+        // record a visit to the page
         signupsio.visit(document.title);
+
+        // keep an eye on the form for IX
         signupsio.trackForm(form);
       }
     });
