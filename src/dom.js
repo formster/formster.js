@@ -16,10 +16,10 @@ function each(el, selector, fn) {
 }
 
 function addClass(el, className) {
-  if (el.classList) {
-    el.classList.add(className);
-  } else if(!~el.className.split(' ').indexOf(className)) {
-    el.className += ' ' + className;
+  var split = el.className.split(' ');
+  if(!~split.indexOf(className)) {
+    split.push(className);
+    el.className = split.join(' ');
   }
 }
 
