@@ -33,6 +33,8 @@ function Api(key) {
   }
 }
 
+Api.Keen = Keen;
+
 Api.prototype._setKeys = function (key) {
   var parts = key.split(':');
   this._projectId = parts[0];
@@ -78,12 +80,12 @@ Api.prototype.sendEvent = function (name, data, callback) {
     name = name.slice(0, 256);
   }
 
-  Keen.configure({
+  Api.Keen.configure({
     projectId: this._projectId,
     writeKey: this._writeKey
   });
 
-  Keen.addEvent(name, data, function (success) {
+  Api.Keen.addEvent(name, data, function (success) {
     callback(null, success);
   }, function (err) {
     callback(err);
@@ -864,6 +866,7 @@ if (Keen._ocrq && Keen._ocrq.length > 0) {
 
 },{}],7:[function(_dereq_,module,exports){
 var Api = _dereq_('./api'),
+  qs = _dereq_(qs),
   dom = _dereq_('./dom');
 
 module.exports = Signupsio;
@@ -874,6 +877,20 @@ function Signupsio(key) {
 }
 
 Signupsio.Api = Api;
+
+Signupsio.auto = function () {
+  dom.ready(function () {
+    dom.each("form.signupsio", function (form) {
+      var href = form.getAttribute('href');
+      if(~href.indexOf('?')) {
+        var key = qs.parse(href.slice(href.indexOf('?') + 1)).key;
+        var signupsio = new Signupsio(key);
+        signupsio.visit(document.title);
+        signupsio.trackForm(form);
+      }
+    });
+  });
+};
 
 Signupsio.prototype.trackForm = function(form) {
   var self = this;
@@ -886,14 +903,6 @@ Signupsio.prototype.trackForm = function(form) {
 Signupsio.prototype.visit = function (page) {
   this.api.sendEvent('visit', {
     page_name: page
-  });
-};
-
-Signupsio.prototype.auto = function () {
-  var self = this;
-  dom.ready(function () {
-    self.visit(document.title);
-    dom.each("form.signupsio", self.trackForm.bind(self));
   });
 };
 

@@ -1,4 +1,5 @@
 var Api = require('./api'),
+  qs = require(qs),
   dom = require('./dom');
 
 module.exports = Signupsio;
@@ -9,6 +10,20 @@ function Signupsio(key) {
 }
 
 Signupsio.Api = Api;
+
+Signupsio.auto = function () {
+  dom.ready(function () {
+    dom.each("form.signupsio", function (form) {
+      var href = form.getAttribute('href');
+      if(~href.indexOf('?')) {
+        var key = qs.parse(href.slice(href.indexOf('?') + 1)).key;
+        var signupsio = new Signupsio(key);
+        signupsio.visit(document.title);
+        signupsio.trackForm(form);
+      }
+    });
+  });
+};
 
 Signupsio.prototype.trackForm = function(form) {
   var self = this;
@@ -21,14 +36,6 @@ Signupsio.prototype.trackForm = function(form) {
 Signupsio.prototype.visit = function (page) {
   this.api.sendEvent('visit', {
     page_name: page
-  });
-};
-
-Signupsio.prototype.auto = function () {
-  var self = this;
-  dom.ready(function () {
-    self.visit(document.title);
-    dom.each("form.signupsio", self.trackForm.bind(self));
   });
 };
 
