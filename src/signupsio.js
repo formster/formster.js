@@ -1,5 +1,5 @@
 var Api = require('./api'),
-  qs = require(qs),
+  qs = require('qs'),
   dom = require('./dom');
 
 module.exports = Signupsio;
