@@ -991,7 +991,7 @@ var request = _dereq_('reqwest');
 module.exports = Api;
 
 function Api(key) {
-  this._url = 'http://signups.io/projects/<key>/key';
+  this._url = 'http://keys.signups.io/projects/<key>/key';
   this._queue = [];
   this._active = false;
 
