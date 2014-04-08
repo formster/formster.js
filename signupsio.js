@@ -155,6 +155,7 @@ module.exports = {
 },{}],5:[function(_dereq_,module,exports){
 exports.each = each;
 exports.addClass = addClass;
+exports.removeClass = removeClass;
 exports.ready = ready;
 exports.val = val;
 exports.trigger = trigger;
@@ -175,6 +176,10 @@ function addClass(el, className) {
   } else if(!~el.className.split(' ').indexOf(className)) {
     el.className += ' ' + className;
   }
+}
+
+function removeClass(el, className) {
+  el.className = el.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
 }
 
 function ready(fn) {
@@ -922,6 +927,8 @@ Signupsio.prototype._onSubmit = function (form) {
   return function (e) {
     e.preventDefault();
 
+    dom.addClass(form, 'signupsio-submitting');
+
     var values = {};
 
     dom.each(form, "input, select, textarea, button", function (el) {
@@ -929,19 +936,21 @@ Signupsio.prototype._onSubmit = function (form) {
     });
 
     self.api.sendEvent('signup', values, function (err, signup) {
+      dom.removeClass(form, 'signupsio-submitting');
       if(err) {
         dom.trigger(form, 'signup:error', err);
-        dom.addClass(form, 'error');
+        dom.addClass(form, 'signupsio-error');
       } else {
         dom.trigger(form, 'signup', values);
-        dom.addClass(form, 'submitted');
+        dom.addClass(form, 'signupsio-submitted');
       }
     });
 
   };
 };
 
-
+// automatically call `Signupsio.auto`. If it's not desired for forms to be scanned automatically, don't class them with `signupsio`.
+Signupsio.auto();
 
 },{"./api":3,"./dom":5}]},{},[7])
 (7)
