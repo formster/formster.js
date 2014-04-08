@@ -1,14 +1,12 @@
 var cookies = require('./cookies');
 var randomstring = require('randomstring');
 var Keen = require('./lib/keen_track');
-var http = require('http');
+var request = require('reqwest');
 
 module.exports = Api;
 
 function Api(key) {
-  this.host = 'http://signups.io';
-  this.port = 80;
-  this._path = '/projects/<key>/key';
+  this._url = 'http://signups.io/projects/<key>/key';
   this._queue = [];
   this._active = false;
 
@@ -25,8 +23,8 @@ function Api(key) {
 
 Api.Keen = Keen;
 
-Api.prototype.path = function (key) {
-  return this._path.replace('<key>', key);
+Api.prototype.url = function (key) {
+  return this._url.replace('<key>', key);
 };
 
 Api.prototype._setKeys = function (key) {
@@ -43,17 +41,23 @@ Api.prototype._setKeys = function (key) {
 };
 
 Api.prototype._getKeys = function (key) {
+  var api = this;
 
   // mark the API as inactive until we get the new keys
-  this_active = false;
+  api._active = false;
 
   // grab the full key from signups.io
-  getJSON({ host: this.host, port: this.port, path: this.path(key) }, function (err, json) {
-    if(err) throw err;
-
-    if(!json.key) throw new Error("No key in JSON response.");
-
-    this._setKeys(json.key);
+  request({
+    url: api.url(key),
+    type: 'json',
+    crossOrigin: true,
+    success: function (resp) {
+      if(!resp.key) throw new Error("No key in JSON response.");
+      api._setKeys(resp.key);
+    },
+    error: function (err) {
+      throw err;
+    }
   });
 };
 
@@ -195,37 +199,4 @@ function propNames(data) {
   }
 
   return data;
-}
-
-
-function getJSON(options, callback) {
-  options = options || {};
-
-  http.get({ host: options.host, port: options.port, path: options }, function (res) {
-
-    var chunks = "";
-
-    res.on('data', function (buf) {
-      chunks += buf;
-    });
-
-    res.on('end', function () {
-      if(res.statusCode >= 200 && res.statusCode < 400) {
-        var json;
-
-        try {
-          json = JSON.parse(chunks);
-        } catch(e) {
-          return callback(new Error("Invalid JSON response"));
-        }
-
-        callback(null, json);
-      } else {
-        callback(new Error("HTTP Error: "+res.statusCode));
-      }
-    });
-
-  }).on('error', function (e) {
-    callback(e);
-  });
 }

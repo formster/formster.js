@@ -1,6 +1,6 @@
 {
   "name": "signupsio.js",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Client-side Form Tracking for Signups.io",
   "main": "./src/signupsio.js",
   "scripts": {
@@ -14,7 +14,8 @@
   "license": "MIT",
   "dependencies": {
     "qs": "^0.6.6",
-    "randomstring": "^1.0.3"
+    "randomstring": "^1.0.3",
+    "reqwest": "^1.1.0"
   },
   "devDependencies": {
     "browserify": "~2.35.2",
