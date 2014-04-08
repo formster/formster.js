@@ -1,5 +1,6 @@
 exports.each = each;
 exports.addClass = addClass;
+exports.removeClass = removeClass;
 exports.ready = ready;
 exports.val = val;
 exports.trigger = trigger;
@@ -20,6 +21,10 @@ function addClass(el, className) {
   } else if(!~el.className.split(' ').indexOf(className)) {
     el.className += ' ' + className;
   }
+}
+
+function removeClass(el, className) {
+  el.className = el.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
 }
 
 function ready(fn) {
