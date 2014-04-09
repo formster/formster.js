@@ -11,25 +11,43 @@ function Signupsio(key) {
 
 Signupsio.Api = Api;
 
+Signupsio._forms = [];
+Signupsio._instances = {};
+
 Signupsio.auto = function () {
   dom.ready(function () {
     dom.each("form.signupsio", function (form) {
+      var href,
+        key,
+        signupsio;
 
       // pull the url from the form
-      var href = form.getAttribute('action');
+      href = form.getAttribute('action');
+
       if(href && ~href.indexOf('?')) {
 
         // get the key from the query string
-        var key = qs.parse(href.slice(href.indexOf('?') + 1)).key;
+        key = qs.parse(href.slice(href.indexOf('?') + 1)).key;
 
-        // create a new instance for this form
-        var signupsio = new Signupsio(key);
+        if(key) {
 
-        // record a visit to the page
-        signupsio.visit(document.title);
+          if(~Signupsio._forms.indexOf(form)) {
+            // we're already tracking this form
+            return;
+          }
 
-        // keep an eye on the form for IX
-        signupsio.trackForm(form);
+          // don't track forms more than once
+          Signupsio._forms.push(form);
+
+          // create a new instance for this form
+          signupsio = new Signupsio(key);
+
+          // record a visit to the page
+          signupsio.visit(document.title);
+
+          // keep an eye on the form for IX
+          signupsio.trackForm(form);
+        }
       }
     });
   });
