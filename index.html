@@ -1,0 +1,120 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Signupsio.js by signupsio</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Signupsio.js</h1>
+        <p>Client-side Form Tracking for Signups.io</p>
+
+        <p class="view"><a href="https://github.com/signupsio/signupsio.js">View the Project on GitHub <small>signupsio/signupsio.js</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/signupsio/signupsio.js/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/signupsio/signupsio.js/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/signupsio/signupsio.js">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h2>
+<a name="signupsiojs---the-signupsio-client-side-library" class="anchor" href="#signupsiojs---the-signupsio-client-side-library"><span class="octicon octicon-link"></span></a>signupsio.js - the Signups.io Client-side Library</h2>
+
+<p><a href="http://signups.io">Signups.io</a> is a service to let you easily create and track sign up forms on static web pages. For more information and examples, visit <a href="http://signups.io">Signups.io</a>.</p>
+
+<h1>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h1>
+
+<h3>
+<a name="cdn-recommended" class="anchor" href="#cdn-recommended"><span class="octicon octicon-link"></span></a>CDN (recommended)</h3>
+
+<p>Signups.io maintains a CDN for the signupsio.js Library (built as a standalone). The format for requests to the CDN is:
+<code>protocol://cdn.signups.io/{version}/{script}</code></p>
+
+<p>Simply drop a script tag in, and you're ready to go:</p>
+
+<div class="highlight highlight-html"><pre>    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"//cdn.signups.io/v0.3.0/signupsio.min.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+</pre></div>
+
+<h3>
+<a name="standalone" class="anchor" href="#standalone"><span class="octicon octicon-link"></span></a>Standalone</h3>
+
+<p>The signupsio.js library is built using <a href="http://browserify.org">Browserify</a>. Standalone libraries are available in <code>[build/](/build)</code>, and are exposed to the <code>window</code> object as <code>Signupsio</code> if no other module system is detected. Browserify uses <a href="https://github.com/forbeslindesay/umd">UMD</a> to expose standalone modules.</p>
+
+<h3>
+<a name="browserify" class="anchor" href="#browserify"><span class="octicon octicon-link"></span></a>Browserify</h3>
+
+<p>To include the client-side library in your own Browserify build, just install the signupsio.js package through <a href="http://npmjs.org">npm</a>:</p>
+
+<div class="highlight highlight-javascript"><pre>    <span class="nx">$</span> <span class="nx">npm</span> <span class="nx">install</span> <span class="nx">signupsio</span><span class="p">.</span><span class="nx">js</span>
+</pre></div>
+
+<h1>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h1>
+
+<h3>
+<a name="auto-tracking" class="anchor" href="#auto-tracking"><span class="octicon octicon-link"></span></a>Auto Tracking</h3>
+
+<p>signupsio.js automatically scans the page for <code>&lt;form&gt;</code>s with a <code>className</code> of signupsio on <code>DOMReady</code>. Upon finding them, it instantiates the API and starts tracking. For the majority of cases, this automatic tracking is sufficient. To trigger auto tracking at a later time, call the <code>auto</code> method of the <code>Signupsio</code> object:</p>
+
+<div class="highlight highlight-javascript"><pre>    <span class="kd">function</span> <span class="nx">callMeLater</span><span class="p">()</span> <span class="p">{</span>
+      <span class="nx">Signupsio</span><span class="p">.</span><span class="nx">auto</span><span class="p">();</span>
+    <span class="p">}</span>
+</pre></div>
+
+<p>Signupsio.js keeps track of which forms it is tracking, so calling <code>auto</code> multiple times will <em>not</em> result in a duplication of data.</p>
+
+<h3>
+<a name="manual-tracking" class="anchor" href="#manual-tracking"><span class="octicon octicon-link"></span></a>Manual Tracking</h3>
+
+<p>In some cases, more control over the form tracking process might be desirable.</p>
+
+<h4>
+<a name="instantiation" class="anchor" href="#instantiation"><span class="octicon octicon-link"></span></a>Instantiation</h4>
+
+<p><code>Signupsio</code> is a constructor for the API which takes the API key as its only parameter:</p>
+
+<div class="highlight highlight-javascript"><pre>    <span class="kd">var</span> <span class="nx">signupsio</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Signupsio</span><span class="p">(</span><span class="s1">'YOUR_API_KEY'</span><span class="p">);</span>
+</pre></div>
+
+<h4>
+<a name="track-form" class="anchor" href="#track-form"><span class="octicon octicon-link"></span></a>Track Form</h4>
+
+<p>To track a form (including form clicks and submissions), pass the DOM element to the <code>trackForm</code> method:</p>
+
+<div class="highlight highlight-javascript"><pre>    <span class="nx">signupsio</span><span class="p">.</span><span class="nx">trackForm</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s2">"#my-form-id"</span><span class="p">).</span><span class="nx">get</span><span class="p">(</span><span class="mi">0</span><span class="p">));</span>
+</pre></div>
+
+<h4>
+<a name="page-visit" class="anchor" href="#page-visit"><span class="octicon octicon-link"></span></a>Page Visit</h4>
+
+<p>To track a visit to a page, use the <code>visit</code> method with a page name as the only paramter:</p>
+
+<div class="highlight highlight-javascript"><pre>    <span class="nx">signupsio</span><span class="p">.</span><span class="nx">visit</span><span class="p">(</span><span class="s2">"lead-form"</span><span class="p">);</span>
+</pre></div>
+
+<h3>
+<a name="underlying-api-library" class="anchor" href="#underlying-api-library"><span class="octicon octicon-link"></span></a>Underlying API Library</h3>
+
+<p>The guts of signupsio.js, most users will never need to touch the underlying library. However, it is exposed on the <code>Signupsio</code> object as <code>Signupsio.Api</code>. Any changes made to the <code>Api</code> object will be used in all future instances of <code>Signupsio</code>.</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/signupsio">signupsio</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
