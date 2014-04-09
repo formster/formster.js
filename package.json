@@ -2,6 +2,10 @@
   "name": "signupsio.js",
   "version": "0.3.0",
   "description": "Client-side Form Tracking for Signups.io",
+  "keywords": [
+    "signups.io",
+    "form tracking"
+  ],
   "main": "./src/signupsio.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -10,6 +14,11 @@
     "build": "npm run build-dev & npm run build-prod",
     "watch": "watchify src/signupsio.js -o build/signupsio.js -s Signupsio"
   },
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/signupsio/signupsio.js.git"
+  },
+  "homepage": "http://github.com/signupsio/signupsio.js",
   "author": "trey.griffith@gmail.com",
   "license": "MIT",
   "dependencies": {
