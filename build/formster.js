@@ -1,4 +1,4 @@
-!function(e){if("object"==typeof exports)module.exports=e();else if("function"==typeof define&&define.amd)define(e);else{var f;"undefined"!=typeof window?f=window:"undefined"!=typeof global?f=global:"undefined"!=typeof self&&(f=self),f.Signupsio=e()}}(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
+!function(e){"object"==typeof exports?module.exports=e():"function"==typeof define&&define.amd?define(e):"undefined"!=typeof window?window.Formster=e():"undefined"!=typeof global?global.Formster=e():"undefined"!=typeof self&&(self.Formster=e())}(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 /**
  * Object#toString() ref for stringify().
  */
@@ -366,9 +366,9 @@ function decode(str) {
   }
 }
 
-},{}],2:[function(_dereq_,module,exports){
-module.exports = _dereq_("./lib/randomstring");
-},{"./lib/randomstring":3}],3:[function(_dereq_,module,exports){
+},{}],2:[function(require,module,exports){
+module.exports = require("./lib/randomstring");
+},{"./lib/randomstring":3}],3:[function(require,module,exports){
 var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghiklmnopqrstuvwxyz';
 
 exports.generate = function(length) {
@@ -383,7 +383,7 @@ exports.generate = function(length) {
   
   return string;
 }
-},{}],4:[function(_dereq_,module,exports){
+},{}],4:[function(require,module,exports){
 /*!
   * Reqwest! A general purpose XHR connection manager
   * license MIT (c) Dustin Diaz 2014
@@ -982,27 +982,27 @@ exports.generate = function(length) {
   return reqwest
 });
 
-},{}],5:[function(_dereq_,module,exports){
-var cookies = _dereq_('./cookies');
-var randomstring = _dereq_('randomstring');
-var Keen = _dereq_('./lib/keen_track');
-var request = _dereq_('reqwest');
+},{}],5:[function(require,module,exports){
+var cookies = require('./cookies');
+var randomstring = require('randomstring');
+var Keen = require('./lib/keen_track');
+var request = require('reqwest');
 
 module.exports = Api;
 
 function Api(key) {
-  this._url = 'http://keys.signups.io/projects/<key>/key';
+  this._url = 'http://keys.formster.io/projects/<key>/key';
   this._queue = [];
   this._active = false;
 
   this.key = key || "";
   if(key) this._getKeys(key);
 
-  if(!cookies.hasItem('signups.io')) {
+  if(!cookies.hasItem('formster.io')) {
     this.cookie = randomstring.generate();
-    cookies.setItem('signups.io', this.cookie, Infinity, '/'); 
+    cookies.setItem('formster.io', this.cookie, Infinity, '/'); 
   } else {
-    this.cookie = cookies.getItem('signups.io');
+    this.cookie = cookies.getItem('formster.io');
   }
 }
 
@@ -1031,7 +1031,7 @@ Api.prototype._getKeys = function (key) {
   // mark the API as inactive until we get the new keys
   api._active = false;
 
-  // grab the full key from signups.io
+  // grab the full key from formster.io
   request({
     url: api.url(key),
     type: 'json',
@@ -1070,7 +1070,7 @@ Api.prototype.sendEvent = function (name, data, callback) {
   callback = callback || function () {};
 
   // error checking
-  if(data.meta) return callback(new Error("Meta data is reserved for Signups.io"));
+  if(data.meta) return callback(new Error("Meta data is reserved for Formster"));
 
   // log the time before we queue it so it's the actual request time, not the time it was sent
   data.keen = {
@@ -1186,7 +1186,7 @@ function propNames(data) {
   return data;
 }
 
-},{"./cookies":6,"./lib/keen_track":8,"randomstring":2,"reqwest":4}],6:[function(_dereq_,module,exports){
+},{"./cookies":6,"./lib/keen_track":9,"randomstring":2,"reqwest":4}],6:[function(require,module,exports){
 /*\
 |*|
 |*|  :: cookies.js ::
@@ -1246,7 +1246,7 @@ module.exports = {
   }
 };
 
-},{}],7:[function(_dereq_,module,exports){
+},{}],7:[function(require,module,exports){
 exports.each = each;
 exports.addClass = addClass;
 exports.removeClass = removeClass;
@@ -1311,7 +1311,118 @@ function trigger(el, evt, data) {
   el.dispatchEvent(event);
 }
 
-},{}],8:[function(_dereq_,module,exports){
+},{}],8:[function(require,module,exports){
+var Api = require('./api'),
+  qs = require('qs'),
+  dom = require('./dom');
+
+module.exports = Formster;
+
+function Formster(key) {
+  if(!(this instanceof Formster)) return new Formster(key);
+  this.api = new Formster.Api(key);
+}
+
+Formster.Api = Api;
+
+Formster._forms = [];
+Formster._instances = {};
+
+Formster.auto = function () {
+  dom.ready(function () {
+    dom.each("form.formster", function (form) {
+      var href,
+        key,
+        formster;
+
+      // pull the url from the form
+      href = form.getAttribute('action');
+
+      if(href && ~href.indexOf('?')) {
+
+        // get the key from the query string
+        key = qs.parse(href.slice(href.indexOf('?') + 1)).key;
+
+        if(key) {
+
+          if(~Formster._forms.indexOf(form)) {
+            // we're already tracking this form
+            return;
+          }
+
+          // don't track forms more than once
+          Formster._forms.push(form);
+
+          // create a new instance for this form
+          formster = new Formster(key);
+
+          // record a visit to the page
+          formster.visit(document.title);
+
+          // keep an eye on the form for IX
+          formster.trackForm(form);
+        }
+      }
+    });
+  });
+};
+
+Formster.prototype.trackForm = function(form) {
+  var self = this;
+  form.addEventListener('submit', this._onSubmit(form));
+  dom.each(form, "input, select, textarea, button", function (el) {
+    el.addEventListener('click', self._onClick(el));
+  });
+};
+
+Formster.prototype.visit = function (page) {
+  this.api.sendEvent('visit', {
+    page_name: page
+  });
+};
+
+Formster.prototype._onClick = function () {
+  var self = this;
+  return function (e) {
+    self.api.sendEvent('click', {
+      input_name: this.getAttribute('name'),
+      input_type: this.tagName.toLowerCase() === 'input' ? this.getAttribute('type') : this.tagName.toLowerCase()
+    });
+  };
+};
+
+Formster.prototype._onSubmit = function (form) {
+  var self = this;
+
+  return function (e) {
+    e.preventDefault();
+
+    dom.addClass(form, 'formster-submitting');
+
+    var values = {};
+
+    dom.each(form, "input, select, textarea, button", function (el) {
+      dom.val(el, values);
+    });
+
+    self.api.sendEvent('signup', values, function (err, signup) {
+      dom.removeClass(form, 'formster-submitting');
+      if(err) {
+        dom.trigger(form, 'signup:error', err);
+        dom.addClass(form, 'formster-error');
+      } else {
+        dom.trigger(form, 'signup', values);
+        dom.addClass(form, 'formster-submitted');
+      }
+    });
+
+  };
+};
+
+// automatically call `Formster.auto`. If it's not desired for forms to be scanned automatically, don't class them with `formster`.
+Formster.auto();
+
+},{"./api":5,"./dom":7,"qs":1}],9:[function(require,module,exports){
 var Keen = exports;
 
 // deal with some browsers not supporting console.log
@@ -1963,117 +2074,7 @@ if (Keen._ocrq && Keen._ocrq.length > 0) {
     Keen._ocrq = null;
 }
 
-},{}],9:[function(_dereq_,module,exports){
-var Api = _dereq_('./api'),
-  qs = _dereq_('qs'),
-  dom = _dereq_('./dom');
-
-module.exports = Signupsio;
-
-function Signupsio(key) {
-  if(!(this instanceof Signupsio)) return new Signupsio(key);
-  this.api = new Signupsio.Api(key);
-}
-
-Signupsio.Api = Api;
-
-Signupsio._forms = [];
-Signupsio._instances = {};
-
-Signupsio.auto = function () {
-  dom.ready(function () {
-    dom.each("form.signupsio", function (form) {
-      var href,
-        key,
-        signupsio;
-
-      // pull the url from the form
-      href = form.getAttribute('action');
-
-      if(href && ~href.indexOf('?')) {
-
-        // get the key from the query string
-        key = qs.parse(href.slice(href.indexOf('?') + 1)).key;
-
-        if(key) {
-
-          if(~Signupsio._forms.indexOf(form)) {
-            // we're already tracking this form
-            return;
-          }
-
-          // don't track forms more than once
-          Signupsio._forms.push(form);
-
-          // create a new instance for this form
-          signupsio = new Signupsio(key);
-
-          // record a visit to the page
-          signupsio.visit(document.title);
-
-          // keep an eye on the form for IX
-          signupsio.trackForm(form);
-        }
-      }
-    });
-  });
-};
-
-Signupsio.prototype.trackForm = function(form) {
-  var self = this;
-  form.addEventListener('submit', this._onSubmit(form));
-  dom.each(form, "input, select, textarea, button", function (el) {
-    el.addEventListener('click', self._onClick(el));
-  });
-};
-
-Signupsio.prototype.visit = function (page) {
-  this.api.sendEvent('visit', {
-    page_name: page
-  });
-};
-
-Signupsio.prototype._onClick = function () {
-  var self = this;
-  return function (e) {
-    self.api.sendEvent('click', {
-      input_name: this.getAttribute('name'),
-      input_type: this.tagName.toLowerCase() === 'input' ? this.getAttribute('type') : this.tagName.toLowerCase()
-    });
-  };
-};
-
-Signupsio.prototype._onSubmit = function (form) {
-  var self = this;
-
-  return function (e) {
-    e.preventDefault();
-
-    dom.addClass(form, 'signupsio-submitting');
-
-    var values = {};
-
-    dom.each(form, "input, select, textarea, button", function (el) {
-      dom.val(el, values);
-    });
-
-    self.api.sendEvent('signup', values, function (err, signup) {
-      dom.removeClass(form, 'signupsio-submitting');
-      if(err) {
-        dom.trigger(form, 'signup:error', err);
-        dom.addClass(form, 'signupsio-error');
-      } else {
-        dom.trigger(form, 'signup', values);
-        dom.addClass(form, 'signupsio-submitted');
-      }
-    });
-
-  };
-};
-
-// automatically call `Signupsio.auto`. If it's not desired for forms to be scanned automatically, don't class them with `signupsio`.
-Signupsio.auto();
-
-},{"./api":5,"./dom":7,"qs":1}]},{},[9])
-(9)
+},{}]},{},[8])
+(8)
 });
+;

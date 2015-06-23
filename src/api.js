@@ -6,18 +6,18 @@ var request = require('reqwest');
 module.exports = Api;
 
 function Api(key) {
-  this._url = 'http://keys.signups.io/projects/<key>/key';
+  this._url = 'http://keys.formster.io/projects/<key>/key';
   this._queue = [];
   this._active = false;
 
   this.key = key || "";
   if(key) this._getKeys(key);
 
-  if(!cookies.hasItem('signups.io')) {
+  if(!cookies.hasItem('formster.io')) {
     this.cookie = randomstring.generate();
-    cookies.setItem('signups.io', this.cookie, Infinity, '/'); 
+    cookies.setItem('formster.io', this.cookie, Infinity, '/'); 
   } else {
-    this.cookie = cookies.getItem('signups.io');
+    this.cookie = cookies.getItem('formster.io');
   }
 }
 
@@ -46,7 +46,7 @@ Api.prototype._getKeys = function (key) {
   // mark the API as inactive until we get the new keys
   api._active = false;
 
-  // grab the full key from signups.io
+  // grab the full key from formster.io
   request({
     url: api.url(key),
     type: 'json',
@@ -85,7 +85,7 @@ Api.prototype.sendEvent = function (name, data, callback) {
   callback = callback || function () {};
 
   // error checking
-  if(data.meta) return callback(new Error("Meta data is reserved for Signups.io"));
+  if(data.meta) return callback(new Error("Meta data is reserved for Formster"));
 
   // log the time before we queue it so it's the actual request time, not the time it was sent
   data.keen = {

@@ -2,24 +2,24 @@ var Api = require('./api'),
   qs = require('qs'),
   dom = require('./dom');
 
-module.exports = Signupsio;
+module.exports = Formster;
 
-function Signupsio(key) {
-  if(!(this instanceof Signupsio)) return new Signupsio(key);
-  this.api = new Signupsio.Api(key);
+function Formster(key) {
+  if(!(this instanceof Formster)) return new Formster(key);
+  this.api = new Formster.Api(key);
 }
 
-Signupsio.Api = Api;
+Formster.Api = Api;
 
-Signupsio._forms = [];
-Signupsio._instances = {};
+Formster._forms = [];
+Formster._instances = {};
 
-Signupsio.auto = function () {
+Formster.auto = function () {
   dom.ready(function () {
-    dom.each("form.signupsio", function (form) {
+    dom.each("form.formster", function (form) {
       var href,
         key,
-        signupsio;
+        formster;
 
       // pull the url from the form
       href = form.getAttribute('action');
@@ -31,29 +31,29 @@ Signupsio.auto = function () {
 
         if(key) {
 
-          if(~Signupsio._forms.indexOf(form)) {
+          if(~Formster._forms.indexOf(form)) {
             // we're already tracking this form
             return;
           }
 
           // don't track forms more than once
-          Signupsio._forms.push(form);
+          Formster._forms.push(form);
 
           // create a new instance for this form
-          signupsio = new Signupsio(key);
+          formster = new Formster(key);
 
           // record a visit to the page
-          signupsio.visit(document.title);
+          formster.visit(document.title);
 
           // keep an eye on the form for IX
-          signupsio.trackForm(form);
+          formster.trackForm(form);
         }
       }
     });
   });
 };
 
-Signupsio.prototype.trackForm = function(form) {
+Formster.prototype.trackForm = function(form) {
   var self = this;
   form.addEventListener('submit', this._onSubmit(form));
   dom.each(form, "input, select, textarea, button", function (el) {
@@ -61,13 +61,13 @@ Signupsio.prototype.trackForm = function(form) {
   });
 };
 
-Signupsio.prototype.visit = function (page) {
+Formster.prototype.visit = function (page) {
   this.api.sendEvent('visit', {
     page_name: page
   });
 };
 
-Signupsio.prototype._onClick = function () {
+Formster.prototype._onClick = function () {
   var self = this;
   return function (e) {
     self.api.sendEvent('click', {
@@ -77,13 +77,13 @@ Signupsio.prototype._onClick = function () {
   };
 };
 
-Signupsio.prototype._onSubmit = function (form) {
+Formster.prototype._onSubmit = function (form) {
   var self = this;
 
   return function (e) {
     e.preventDefault();
 
-    dom.addClass(form, 'signupsio-submitting');
+    dom.addClass(form, 'formster-submitting');
 
     var values = {};
 
@@ -92,18 +92,18 @@ Signupsio.prototype._onSubmit = function (form) {
     });
 
     self.api.sendEvent('signup', values, function (err, signup) {
-      dom.removeClass(form, 'signupsio-submitting');
+      dom.removeClass(form, 'formster-submitting');
       if(err) {
         dom.trigger(form, 'signup:error', err);
-        dom.addClass(form, 'signupsio-error');
+        dom.addClass(form, 'formster-error');
       } else {
         dom.trigger(form, 'signup', values);
-        dom.addClass(form, 'signupsio-submitted');
+        dom.addClass(form, 'formster-submitted');
       }
     });
 
   };
 };
 
-// automatically call `Signupsio.auto`. If it's not desired for forms to be scanned automatically, don't class them with `signupsio`.
-Signupsio.auto();
+// automatically call `Formster.auto`. If it's not desired for forms to be scanned automatically, don't class them with `formster`.
+Formster.auto();

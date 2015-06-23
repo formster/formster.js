@@ -1,24 +1,25 @@
 {
-  "name": "signupsio.js",
+  "name": "formster.js",
   "version": "0.3.0",
-  "description": "Client-side Form Tracking for Signups.io",
+  "description": "Client-side Form Tracking for Formster.io",
   "keywords": [
     "signups.io",
+    "formster.io",
     "form tracking"
   ],
-  "main": "./src/signupsio.js",
+  "main": "./src/formster.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build-dev": "browserify src/signupsio.js -s Signupsio > build/signupsio.js",
-    "build-prod": "browserify src/signupsio.js -s Signupsio | uglifyjs > build/signupsio.min.js",
+    "build-dev": "browserify src/formster.js -s Formster > build/formster.js",
+    "build-prod": "browserify src/formster.js -s Formster | uglifyjs > build/formster.min.js",
     "build": "npm run build-dev & npm run build-prod",
-    "watch": "watchify src/signupsio.js -o build/signupsio.js -s Signupsio"
+    "watch": "watchify src/formster.js -o build/formster.js -s Formster"
   },
   "repository": {
     "type": "git",
-    "url": "http://github.com/signupsio/signupsio.js.git"
+    "url": "http://github.com/formster/formster.js.git"
   },
-  "homepage": "http://github.com/signupsio/signupsio.js",
+  "homepage": "http://github.com/formster/formster.js",
   "author": "trey.griffith@gmail.com",
   "license": "MIT",
   "dependencies": {
@@ -28,7 +29,7 @@
   },
   "devDependencies": {
     "browserify": "~2.35.2",
-    "uglifyjs": "~2.3.6",
+    "uglifyjs": "~2.4.10",
     "watchify": "^0.6.3"
   }
 }
