@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Signupsio.js by Signups.io</title>
+    <title>Formster.js by Formster.io</title>
 
     <link rel="stylesheet" href="stylesheets/styles.css">
     <link rel="stylesheet" href="stylesheets/pygment_trac.css">
@@ -15,25 +15,25 @@
   <body>
     <div class="wrapper">
       <header>
-        <h1>Signupsio.js</h1>
-        <p>Client-side Form Tracking for <a href="http://signups.io">Signups.io</a></p>
+        <h1>Formster.js</h1>
+        <p>Client-side Form Tracking for <a href="http://formster.io">Formster.io</a></p>
 
         <ul>
-          <li><a href="http://signups.io">Visit <strong>Signups.io</strong></a></li>
-          <li><a href="https://github.com/signupsio/signupsio.js">View On <strong>GitHub</strong></a></li>
-          <li><a href="https://cdn.signups.io/v0.3.0/signups.min.js">Download <strong>Library</strong></a></li>
+          <li><a href="http://formster.io">Visit <strong>Formster.io</strong></a></li>
+          <li><a href="https://github.com/formster/formster.js">View On <strong>GitHub</strong></a></li>
+          <li><a href="https://cdn.formster.io/v0.3.0/formster.min.js">Download <strong>Library</strong></a></li>
         </ul>
       </header>
       <section>
         <h2>
-<a name="signupsiojs---the-signupsio-client-side-library" class="anchor" href="#signupsiojs---the-signupsio-client-side-library"><span class="octicon octicon-link"></span></a>signupsio.js - the Signups.io Client-side Library</h2>
+<a name="formsterjs---the-formster-client-side-library" class="anchor" href="#formsterjs---the-formster-client-side-library"><span class="octicon octicon-link"></span></a>formster.js - the Formster.io Client-side Library</h2>
 
-<p><a href="http://signups.io">Signups.io</a> is a service to let you easily create and track sign up forms on static web pages. To sign up, visit <a href="http://signups.io">Signups.io</a>. For more information on the client-side library including installation and usage instructions, <a href="https://github.com/signupsio/signupsio.js">view the project on GitHub</a>.</p>
+<p><a href="http://formster.io">Formster.io</a> is a service to let you easily create and track sign up forms on static web pages. To sign up, visit <a href="http://formster.io">Formster.io</a>. For more information on the client-side library including installation and usage instructions, <a href="https://github.com/formster/formster.js">view the project on GitHub</a>.</p>
 
 <h1>
 <a name="example" class="anchor" href="#example"><span class="octicon octicon-link"></span></a>Example Form</h1>
 
-<p>To create a Signups.io form, you need to create a new project on Signups.io, like <a href="http://signups.io/projects/public/534314954dc4060b00000001">this public project</a>. After a project has been created, you just need to add the <code>&lt;form&gt;</code> and <code>&lt;script&gt;</code> tags provided.</p>
+<p>To create a Formster.io form, you need to create a new project on Formster.io, like <a href="http://formster.io/projects/public/534314954dc4060b00000001">this public project</a>. After a project has been created, you just need to add the <code>&lt;form&gt;</code> and <code>&lt;script&gt;</code> tags provided.</p>
 
 <p>As an example, I might use the code below to produce a sign up form:</p>
 
@@ -44,18 +44,18 @@
       <span class="k">display</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
   <span class="p">}</span>
 
-  <span class="nc">.signupsio.signupsio-submitted</span> <span class="p">{</span>
+  <span class="nc">.formster.formster-submitted</span> <span class="p">{</span>
       <span class="k">display</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
   <span class="p">}</span>
 
-  <span class="nc">.signupsio.signupsio-submitted</span> <span class="o">+</span> <span class="nt">thanks</span> <span class="p">{</span>
+  <span class="nc">.formster.formster-submitted</span> <span class="o">+</span> <span class="nt">thanks</span> <span class="p">{</span>
       <span class="k">display</span><span class="o">:</span> <span class="k">block</span><span class="p">;</span>
   <span class="p">}</span>
 <span class="nt">&lt;/style&gt;</span>
 
 <span class="nt">&lt;h3&gt;</span>Example Sign Up Form<span class="nt">&lt;/h3&gt;</span>
 
-<span class="nt">&lt;form </span><span class="na">class=</span><span class="s">"signupsio"</span> <span class="na">action=</span><span class="s">"http://signups.io/submit?key=534314954dc4060b00000001"</span> <span class="na">method=</span><span class="s">"POST"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;form </span><span class="na">class=</span><span class="s">"formster"</span> <span class="na">action=</span><span class="s">"http://formster.io/submit?key=534314954dc4060b00000001"</span> <span class="na">method=</span><span class="s">"POST"</span><span class="nt">&gt;</span>
 
   <span class="nt">&lt;label&gt;</span>First Initial<span class="nt">&lt;/label&gt;</span><span class="nt">&lt;br&gt;</span>
   <span class="nt">&lt;input </span><span class="na">type=</span><span class="s">"text" </span><span class="na">name=</span><span class="s">"f_initial"</span><span class="nt">&gt;</span><span class="nt">&lt;br&gt;</span><span class="nt">&lt;br&gt;</span>
@@ -71,15 +71,15 @@
 <span class="nt">&lt;/form&gt;</span>
 
 <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"thanks"</span><span class="nt">&gt;</span>
-  Thanks for trying out the demo! Now check out the <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"http://signups.io/projects/public/534314954dc4060b00000001"</span><span class="nt">&gt;</span>results<span class="nt">&lt;/a&gt;</span>.
+  Thanks for trying out the demo! Now check out the <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"http://formster.io/projects/public/534314954dc4060b00000001"</span><span class="nt">&gt;</span>results<span class="nt">&lt;/a&gt;</span>.
 <span class="nt">&lt;/div&gt;</span>
 
 
-<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"//cdn.signups.io/v0.3.0/signupsio.min.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"//cdn.formster.io/v0.3.0/formster.min.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
   </pre>
 </div>
 
-<p>Which would produce the form below. Go ahead and try it out, and don't forget to <a href="http://signups.io/projects/public/534314954dc4060b00000001">check out the results page</a> afterward.</p>
+<p>Which would produce the form below. Go ahead and try it out, and don't forget to <a href="http://formster.io/projects/public/534314954dc4060b00000001">check out the results page</a> afterward.</p>
 
 <div class="demo">
   <style type="text/css">
@@ -87,18 +87,18 @@
       display: none;
     }
 
-    .signupsio.signupsio-submitted {
+    .formster.formster-submitted {
       display: none;
     }
 
-    .signupsio.signupsio-submitted + .thanks {
+    .formster.formster-submitted + .thanks {
       display: block;
     }
   </style>
 
   <h3>Example Sign Up Form</h3>
 
-  <form class="signupsio" action="http://signups.io/submit?key=534314954dc4060b00000001" method="POST">
+  <form class="formster" action="http://formster.io/submit?key=534314954dc4060b00000001" method="POST">
     <label>First Initial</label><br>
     <input type="text" name="f_initial"><br><br>
 
@@ -111,19 +111,19 @@
     <input type="submit" value="Sign Up">
   </form>
   <div class="thanks">
-    Thanks for trying out the demo! Now check out the <a href="http://signups.io/projects/public/534314954dc4060b00000001">results</a>.
+    Thanks for trying out the demo! Now check out the <a href="http://formster.io/projects/public/534314954dc4060b00000001">results</a>.
   </div>
 
-  <script src="//cdn.signups.io/v0.3.0/signupsio.min.js"></script>
+  <script src="//cdn.formster.io/v0.3.0/formster.min.js"></script>
 </div>
 
 <br><br>
 
 <h1>Create your own forms</h1>
-<p><a href="http://signups.io/#signup">Create an account</a> on Signups.io to get started making sign up forms on any web page for free today.</p>
+<p><a href="http://formster.io/#signup">Create an account</a> on Formster.io to get started making sign up forms on any web page for free today.</p>
       </section>
       <footer>
-        <p>This project is maintained by <a href="https://github.com/signupsio">signupsio</a></p>
+        <p>This project is maintained by <a href="https://github.com/formster">formster</a></p>
         <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
       </footer>
     </div>
