@@ -14,7 +14,7 @@ Formster.io maintains a CDN for the formster.js Library (built as a standalone).
 Simply drop a script tag in, and you're ready to go:
 
 ```html
-    <script src="//cdn.formster.io/v0.3.0/formster.min.js"></script>
+    <script src="//cdn.formster.io/v0.4.1/formster.min.js"></script>
 ```
 
 
